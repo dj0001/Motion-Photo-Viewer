@@ -1,7 +1,7 @@
 (function(){  //Copyright 2019 dj  ,License BSD 2-Clause
 
-const inp=document.querySelector('input[type=file]'); if(inp) inp.onchange=handleFiles
-function handleFiles(files) {files=this.files  //optional
+var i=0; const inp=document.querySelector('input[type=file]'); if(inp) inp.onchange=function(){handleFiles(multiple?this.files:[this.files[0]])}
+function handleFiles(files) {  //optional
 for (let i = 0; i < files.length; i++) {
 const reader = new FileReader();
 reader.onload = function(evt) {
@@ -33,12 +33,12 @@ function buffertoblob(data) {
 function blobtovid(blob,fn) {
  var vid=document.querySelector('video'); if(vid && !multiple) {vid.src=URL.createObjectURL(blob); vid.title=fn||''; return}
  vid=document.createElement("video"); const ref=document.querySelector('ul')||document.body  //HFS2.4
- vid.loop = true; vid.preload = 'auto'; vid.controls = true
+ vid.preload = 'auto'; vid.controls = true
  vid.style = 'max-height:100vh'
  vid.title = fn||''
  try {blob=new File([blob], fn+'.mp4' ,{type:"video/mp4"})} catch (e) {console.log(e)}  //FF
  vid.src=URL.createObjectURL(blob);
- vid.currentTime=1  //hide Overlay Play button
+ if(inp && !multiple &&inp.files.length) vid.onended=function(){i=(i+1)%inp.files.length;handleFiles([inp.files[i]])}; else {vid.loop=true;vid.currentTime=1}
  if('pictureInPictureEnabled' in document && !multiple && !ls) vid.onloadedmetadata = (e) => vid.requestPictureInPicture(); else  //
  {ref.append(vid)}  //;vid.scrollIntoView()
 }

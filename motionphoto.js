@@ -40,7 +40,7 @@ function blobtovid(blob,fn) {
  vid.src=URL.createObjectURL(blob);
  vid.currentTime=1  //hide Overlay Play button
  if('pictureInPictureEnabled' in document && !multiple && !ls) vid.onloadedmetadata = (e) => vid.requestPictureInPicture(); else  //
- ref.append(vid)
+ {ref.append(vid)}  //;vid.scrollIntoView()
 }
 
 const ref=document.querySelector('#files')||document.body

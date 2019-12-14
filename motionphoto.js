@@ -39,6 +39,7 @@ function blobtovid(blob,fn) {
  try {blob=new File([blob], fn+'.mp4' ,{type:"video/mp4"})} catch (e) {console.log(e)}  //FF
  vid.src=URL.createObjectURL(blob);
  vid.currentTime=1  //hide Overlay Play button
+ if('pictureInPictureEnabled' in document && !multiple && !ls) vid.onloadedmetadata = (e) => vid.requestPictureInPicture(); else  //
  ref.append(vid)
 }
 

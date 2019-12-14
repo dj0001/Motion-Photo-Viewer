@@ -31,8 +31,8 @@ function buffertoblob(data) {
 }
 
 function blobtovid(blob,fn) {
- if(document.querySelector('video') && !multiple) {document.querySelector('video').src=URL.createObjectURL(blob); return}
- const vid=document.createElement("video") ,ref=document.querySelector('ul')||document.body  //HFS2.4
+ var vid=document.querySelector('video'); if(vid && !multiple) {vid.src=URL.createObjectURL(blob); vid.title=fn||''; return}
+ vid=document.createElement("video"); const ref=document.querySelector('ul')||document.body  //HFS2.4
  vid.loop = true; vid.preload = 'auto'; vid.controls = true
  vid.style = 'max-height:100vh'
  vid.title = fn||''

@@ -9,4 +9,4 @@ use querystringparameter ?MV=  [Demo](https://dj0001.github.io/Motion-Photo-View
 
 Simply embed JS in your webpage  [Demo](https://dj0001.github.io/Motion-Photo-Viewer/test.htm)
 
-Use as photoframe, also for (MS)mp4 (set multiple=false)
+Use as photoframe, also for (MS)mp4 (set multiple=false) [Demo](https://dj0001.github.io/Motion-Photo-Viewer/?swap)

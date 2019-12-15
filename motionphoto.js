@@ -38,7 +38,7 @@ function blobtovid(blob,fn) {
  vid.title = fn||''
  try {blob=new File([blob], fn+'.mp4' ,{type:"video/mp4"})} catch (e) {console.log(e)}  //FF
  vid.src=URL.createObjectURL(blob);
- if(inp && !multiple &&inp.files.length) {vid.onended=function(){i=(i+1)%inp.files.length;handleFiles([inp.files[i]])};vid.autoplay=true} else 
+ if(inp && !multiple &&inp.files.length) {vid.onended= () => {let r=3; i=(i+1)%(inp.files.length*r);if(!((i/r)%1)) handleFiles([inp.files[Math.floor(i/r)]]); else vid.play()};vid.autoplay=1} else
  {vid.loop=true;vid.currentTime=1}
  if('pictureInPictureEnabled' in document && !multiple && !ls) vid.onloadedmetadata = (e) => vid.requestPictureInPicture(); else  //
  {ref.append(vid)}  //;vid.scrollIntoView()

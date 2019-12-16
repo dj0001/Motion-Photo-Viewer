@@ -35,7 +35,7 @@ function blobtovid(blob,fn) {
  var vid=document.querySelector('video'); if(vid && !multiple) {vid.src=URL.createObjectURL(blob); vid.title=fn||''; return}
  vid=document.createElement("video"); const ref=document.querySelector('ul')||document.body  //HFS2.4
  vid.preload = 'auto'; vid.controls = true
- vid.style = 'max-height:100vh'
+ vid.style = 'height:100vh'
  vid.title = fn||''
  try {blob=new File([blob], fn+'.mp4' ,{type:"video/mp4"})} catch (e) {console.log(e)}  //FF
  vid.src=URL.createObjectURL(blob);

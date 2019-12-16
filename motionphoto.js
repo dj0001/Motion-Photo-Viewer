@@ -39,7 +39,10 @@ function blobtovid(blob,fn) {
  vid.title = fn||''
  try {blob=new File([blob], fn+'.mp4' ,{type:"video/mp4"})} catch (e) {console.log(e)}  //FF
  vid.src=URL.createObjectURL(blob);
- if(inp && !multiple &&inp.files.length) {vid.onended= () => {let r=3; i=(i+1)%(inp.files.length*r);if(!((i/r)%1)) handleFiles([inp.files[Math.floor(i/r)]]); else vid.play()};vid.autoplay=1} else
+ if(!multiple) {vid.onended= () => {vid.autoplay=1;let r=3;
+  if(inp&&inp.files.length) {i=(i+1)%(inp.files.length*r);if(!((i/r)%1)) handleFiles([inp.files[Math.floor(i/r)]]); else vid.play()}
+  else if(mv&&mv.length) {i=(i+1)%mv.length;imgtoblob(mv[i].getAttribute('src')).then(blob => blobtovid(blob))}  //
+ }} else
  {vid.loop=true;vid.currentTime=1}
  if('pictureInPictureEnabled' in document && !multiple && !ls) vid.onloadedmetadata = (e) => vid.requestPictureInPicture(); else  //
  {ref.append(vid)}  //;vid.scrollIntoView()
@@ -52,4 +55,6 @@ if(event.target.tagName!='IMG' || !/(^|\/)MV.+\.jpg$/.test(img)) return  //motio
 event.preventDefault() 
 imgtoblob(img).then(blob => blobtovid(blob));
 })
+
+var mv=document.querySelectorAll('img')  //'img[src^="MV"]'
 })()

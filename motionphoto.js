@@ -44,8 +44,9 @@ function blobtovid(blob,fn) {
   else if(mv&&mv.length) {i=(i+1)%mv.length;imgtoblob(mv[i].getAttribute('src')).then(blob => blobtovid(blob))}  //
  }} else
  {vid.loop=true;vid.currentTime=1}
- if('pictureInPictureEnabled' in document && !multiple && !ls) vid.onloadedmetadata = (e) => vid.requestPictureInPicture(); else  //
+ if('pictureInPictureEnabled' in document && !multiple && !ls) vid.onloadedmetadata = (e) => vid.requestPictureInPicture(); //else  //
  {ref.append(vid)}  //;vid.scrollIntoView()
+ if (!multiple &&'mediaSession' in navigator) navigator.mediaSession.setActionHandler('nexttrack', vid.onended)  //>5sec click multiple
 }
 
 const ref=document.querySelector('#files')||document.body

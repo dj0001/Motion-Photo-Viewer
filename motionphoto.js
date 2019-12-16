@@ -41,7 +41,7 @@ function blobtovid(blob,fn) {
  vid.src=URL.createObjectURL(blob);
  if(!multiple) {vid.onended= () => {vid.autoplay=1;let r=3;
   if(inp&&inp.files.length) {i=(i+1)%(inp.files.length*r);if(!((i/r)%1)) handleFiles([inp.files[Math.floor(i/r)]]); else vid.play()}
-  else if(mv&&mv.length) {i=(i+1)%mv.length;imgtoblob(mv[i].getAttribute('src')).then(blob => blobtovid(blob))}  //
+  else if(mv&&mv.length) {i=(i+1)%mv.length;imgtoblob(mv[i].getAttribute('src')||mv[i].getAttribute('href')).then(blob => blobtovid(blob))}  //
  }} else
  {vid.loop=true;vid.currentTime=1}
  if('pictureInPictureEnabled' in document && !multiple && !ls) vid.onloadedmetadata = (e) => vid.requestPictureInPicture(); //else  //
@@ -53,9 +53,10 @@ const ref=document.querySelector('#files')||document.body
 ref.addEventListener('click', function(){
 const img=event.target.getAttribute('href')||event.target.getAttribute('src')
 if(event.target.tagName!='IMG' || !/(^|\/)MV.+\.jpg$/.test(img)) return  //motion photos beginns with MV  //edit here 'A' or 'IMG'
+mv=document.querySelectorAll('img')  //'img[src^="MV"]' 'a'
 event.preventDefault() 
 imgtoblob(img).then(blob => blobtovid(blob));
 })
 
-var mv=document.querySelectorAll('img')  //'img[src^="MV"]'
+var mv
 })()

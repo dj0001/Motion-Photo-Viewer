@@ -52,8 +52,8 @@ function blobtovid(blob,fn) {
 const ref=document.querySelector('#files')||document.body
 ref.addEventListener('click', function(){
 const img=event.target.getAttribute('href')||event.target.getAttribute('src')
-if(event.target.tagName!='IMG' || !/(^|\/)MV.+\.jpg$/.test(img)) return  //motion photos beginns with MV  //edit here 'A' or 'IMG'
-mv=document.querySelectorAll('img[src*="MV"]')  //'img[src^="MV"]' 'a'
+let IMG='IMG'; if(event.target.tagName!=IMG || !img.includes('MV')) return  //motion photos beginns with MV  //edit here 'A' or 'IMG'
+mv=document.querySelectorAll(IMG+'['+(IMG=='IMG'?'src':'href')+'*="MV"]')  //'img[src^="MV"]' 'a'
 event.preventDefault() 
 imgtoblob(img).then(blob => blobtovid(blob));
 })

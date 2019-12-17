@@ -15,7 +15,7 @@ reader.readAsArrayBuffer(files[i])
 var multiple=true; //edit here
 
 var ls=location.search; if(ls.slice(0,4)=='?MV=') imgtoblob(ls.slice(4)).then(blob => blobtovid(blob))  //?MV=MV...jpg
-if(ls=='?swap') {multiple=!multiple; ls=false}
+if(ls.startsWith("?swap")) {multiple=!multiple; ls=false}
 
 async function imgtoblob(img) 
 {

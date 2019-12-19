@@ -39,7 +39,7 @@ function blobtovid(blob,fn) {
  vid.title = fn||''
  try {blob=new File([blob], fn+'.mp4' ,{type:"video/mp4"})} catch (e) {console.log(e)}  //FF
  vid.src=URL.createObjectURL(blob);
- if(!multiple) {vid.onended= () => {vid.autoplay=1;let r=3;
+ let r=3; if(!multiple) {vid.onended= () => {vid.autoplay=1;
   if(inp&&inp.files.length) {i=(i+1)%(inp.files.length*r);if(!((i/r)%1)) handleFiles([inp.files[Math.floor(i/r)]]); else vid.play()}
   else if(mv&&mv.length) {i=(i+1)%mv.length;imgtoblob(mv[i].getAttribute('src')||mv[i].getAttribute('href')).then(blob => blobtovid(blob))}  //
  }} else
@@ -47,6 +47,7 @@ function blobtovid(blob,fn) {
  if('pictureInPictureEnabled' in document && !multiple && !ls) vid.onloadedmetadata = (e) => vid.requestPictureInPicture(); //else  //
  {ref.append(vid)}  //;vid.scrollIntoView()
  if (!multiple &&'mediaSession' in navigator) navigator.mediaSession.setActionHandler('nexttrack', vid.onended)  //>5sec click multiple
+ //vid.onerror=function(e){this.poster=URL.createObjectURL(inp.files[i/r]);i+=r-1;window.setTimeout(vid.onended, 5000)}  //add any image
 }
 
 const ref=document.querySelector('#files')||document.body

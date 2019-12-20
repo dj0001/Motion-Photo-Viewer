@@ -35,7 +35,7 @@ function blobtovid(blob,fn) {
  var vid=document.querySelector('video'); if(vid && !multiple) {vid.src=URL.createObjectURL(blob); vid.title=fn||''; return}
  vid=document.createElement("video"); const ref=document.querySelector('ul')||document.body  //HFS2.4
  vid.preload = 'auto'; vid.controls = true
- vid.style = 'height:100vh'
+ vid.style = 'height:100vh; object-fit:scale-down'
  vid.title = fn||''
  try {blob=new File([blob], fn+'.mp4' ,{type:"video/mp4"})} catch (e) {console.log(e)}  //FF
  vid.src=URL.createObjectURL(blob);
@@ -47,7 +47,7 @@ function blobtovid(blob,fn) {
  if('pictureInPictureEnabled' in document && !multiple && !ls) vid.onloadedmetadata = (e) => vid.requestPictureInPicture(); //else  //
  {ref.append(vid)}  //;vid.scrollIntoView()
  if (!multiple &&'mediaSession' in navigator) navigator.mediaSession.setActionHandler('nexttrack', vid.onended)  //>5sec click multiple
- //vid.onerror=function(e){this.poster=URL.createObjectURL(inp.files[i/r]);i+=r-1;window.setTimeout(vid.onended, 5000)}  //add any image
+ vid.onerror=function(e){this.poster=URL.createObjectURL(inp.files[i/r]);i+=r-1;window.setTimeout(vid.onended, 5000)}  //add any image
 }
 
 const ref=document.querySelector('#files')||document.body

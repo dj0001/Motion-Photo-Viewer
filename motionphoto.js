@@ -1,19 +1,18 @@
 (function(){
-var vid=document.createElement("video"), i=0;
+var vid=document.createElement("video"), i=0, a;
   vid.style = 'height:100vh; object-fit:scale-down; scroll-snap-align:start'
   vid.controls=true;
+  vid.onended= function(){i=(i+1)%a.length; vid.src=a[i]; vid.play()}
+  if ('mediaSession' in navigator) navigator.mediaSession.setActionHandler('nexttrack', vid.onended);  //>5sec
 
 (document.querySelector('#files')||document.body).addEventListener('click', function(){
  let b=[...document.querySelectorAll('#files a')]  //'a[href*=".mp4"]'
  if(!b.includes(event.target)) return
  event.preventDefault()
  if(!document.querySelector('video')) {
-
-  vid.onended= function(){i=(i+1)%b.length; vid.src=b[i].href; vid.play()}
-  if ('mediaSession' in navigator) navigator.mediaSession.setActionHandler('nexttrack', vid.onended);  //>5sec
-  
   (document.querySelector('ul')||document.body).append(vid)}
  document.querySelector('video').scrollIntoView()  //
+ a=b.map(x => x.href)
  document.querySelector('video').src=event.target.href
 })
 
@@ -39,6 +38,6 @@ if(ls.startsWith("?MV=")) {vid.loop=true;document.body.append(vid); imgtoblob(ls
 
 /* following is optional */
 const inp=document.querySelector('input[type=file]');
-if(inp) inp.onchange= function(){vid.loop=true;document.body.append(vid); vid.src=URL.createObjectURL(this.files[0])}
+if(inp) inp.onchange= function(){document.body.append(vid); a=[...this.files].map(x => URL.createObjectURL(x)); vid.src=a[0]}
 
 })()

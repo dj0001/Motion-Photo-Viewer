@@ -30,7 +30,8 @@ function buffertoblob(data) {
  var array=new Uint8Array(data), start
  for (var i = 2; i < array.length; i++) {if (array[i+4]==0x66 && array[i+5]==0x74 && array[i+6]==0x79 && array[i+7]==0x70) {start=i; break}}  //ftyp
  var blob=new Blob([array.subarray(start||0, array.length)], {type:"video/mp4"});
-  return blob;
+ if(start==undefined) return false;
+ return blob;
 }
 
 const ls=location.search;  //?MV=MV...jpg

@@ -1,21 +1,24 @@
-(function(){  //Copyright 2019 dj  ,License BSD 2-Clause
+(function(){
+var vid=document.createElement("video"), i=0;
+  vid.style = 'height:100vh; object-fit:scale-down; scroll-snap-align:start'
+  vid.controls=true;
 
-var i=0; const inp=document.querySelector('input[type=file]'); if(inp) inp.onchange=function(){handleFiles(multiple?this.files:[this.files[0]])}
-function handleFiles(files) {  //optional
-for (let i = 0; i < files.length; i++) {
-const reader = new FileReader();
-reader.onload = function(evt) {
- var blob=buffertoblob(evt.target.result)
- blobtovid(blob,files[i].name)
- }
-reader.readAsArrayBuffer(files[i])
-}
-}
+(document.querySelector('#files')||document.body).addEventListener('click', function(){
+ let b=[...document.querySelectorAll('#files a')]  //'a[href*=".mp4"]'
+ if(!b.includes(event.target)) return
+ event.preventDefault()
+ if(!document.querySelector('video')) {
 
-var multiple=true; //edit here
+  vid.onended= function(){i=(i+1)%b.length; vid.src=b[i].href; vid.play()}
+  if ('mediaSession' in navigator) navigator.mediaSession.setActionHandler('nexttrack', vid.onended);  //>5sec
+  
+  (document.querySelector('ul')||document.body).append(vid)}
+ document.querySelector('video').scrollIntoView()  //
+ document.querySelector('video').src=event.target.href
+})
 
-var ls=location.search; if(ls.slice(0,4)=='?MV=') imgtoblob(ls.slice(4)).then(blob => blobtovid(blob))  //?MV=MV...jpg
-if(ls.startsWith("?swap")) {multiple=!multiple; ls=false}
+/* following is motion-photo-viewer; rename .jpg to .mp4.jpg */
+vid.onerror= function(e) {imgtoblob(vid.src).then(blob => {vid.src=URL.createObjectURL(blob);vid.play()})}
 
 async function imgtoblob(img) 
 {
@@ -31,33 +34,11 @@ function buffertoblob(data) {
   return blob;
 }
 
-function blobtovid(blob,fn) {
- var vid=document.querySelector('video'); if(vid && !multiple) {vid.src=URL.createObjectURL(blob); vid.title=fn||'';vid.hidden=false; return}
- vid=document.createElement("video"); const ref=document.querySelector('ul')||document.body  //HFS2.4
- vid.preload = 'auto'; vid.controls = true
- vid.style = 'height:100vh; object-fit:scale-down'
- vid.title = fn||''
- try {blob=new File([blob], fn+'.mp4' ,{type:"video/mp4"})} catch (e) {console.log(e)}  //FF
- vid.src=URL.createObjectURL(blob);
- let r=3; if(!multiple) {vid.onended= () => {vid.autoplay=1;
-  if(inp&&inp.files.length) {i=(i+1)%(inp.files.length*r);if(!((i/r)%1)) handleFiles([inp.files[Math.floor(i/r)]]); else vid.play()}
-  else if(mv&&mv.length) {i=(i+1)%mv.length;imgtoblob(mv[i].getAttribute('src')||mv[i].getAttribute('href')).then(blob => blobtovid(blob))}  //
- }} else
- {vid.loop=true;vid.currentTime=1}
- if('pictureInPictureEnabled' in document && !multiple && !ls) vid.onloadedmetadata = (e) => vid.requestPictureInPicture(); //else  //
- {ref.append(vid)}  //;vid.scrollIntoView()
- if (!multiple &&'mediaSession' in navigator) navigator.mediaSession.setActionHandler('nexttrack', vid.onended)  //>5sec click multiple
- vid.onerror=function(e){this.poster=URL.createObjectURL(inp.files[i/r]);i+=r-1;window.setTimeout(vid.onended, 5000);vid.controls=false}  //add any image
-}
+const ls=location.search;  //?MV=MV...jpg
+if(ls.startsWith("?MV=")) {vid.loop=true;document.body.append(vid); imgtoblob(ls.slice(4)).then(blob => vid.src=URL.createObjectURL(blob))}
 
-const ref=document.querySelector('#files')||document.body
-ref.addEventListener('click', function(){
-const img=event.target.getAttribute('href')||event.target.getAttribute('src')
-let IMG='IMG'; if(event.target.tagName!=IMG || !img.includes('MV')) return  //motion photos beginns with MV  //edit here 'A' or 'IMG'
-mv=document.querySelectorAll(IMG+'['+(IMG=='IMG'?'src':'href')+'*="MV"]')  //'img[src^="MV"]' 'a'
-event.preventDefault() 
-imgtoblob(img).then(blob => blobtovid(blob));
-})
+/* following is optional */
+const inp=document.querySelector('input[type=file]');
+if(inp) inp.onchange= function(){vid.loop=true;document.body.append(vid); vid.src=URL.createObjectURL(this.files[0])}
 
-var mv
 })()

@@ -17,25 +17,25 @@ var vid=document.createElement("video"), i=0, a;
 })
 
 /* following is motion-photo-viewer; rename .jpg to .mp4.jpg */
-vid.onerror= function(e) {imgtoblob(vid.src).then(blob => {vid.src=URL.createObjectURL(blob);vid.play()})}
+vid.onerror= function(e) {imgtoblob(vid.src).then(blob => {vid.src=blob;vid.play()})}
 
 async function imgtoblob(img) 
 {
  let response = await fetch(img);
  let data = await response.arrayBuffer()
- return buffertoblob(data);
+ return URL.createObjectURL(buffertoblob(data));
 }
 
 function buffertoblob(data) {
  var array=new Uint8Array(data), start
- for (var i = 2; i < array.length; i++) {if (array[i+4]==0x66 && array[i+5]==0x74 && array[i+6]==0x79 && array[i+7]==0x70) {start=i; break}}  //ftyp
+ for (var i = 0; i < array.length; i++) {if (array[i+4]==0x66 && array[i+5]==0x74 && array[i+6]==0x79 && array[i+7]==0x70) {start=i; break}}  //ftyp
  var blob=new Blob([array.subarray(start||0, array.length)], {type:"video/mp4"});
  if(start==undefined) return false;
  return blob;
 }
 
 const ls=location.search;  //?MV=MV...jpg
-if(ls.startsWith("?MV=")) {vid.loop=true;document.body.append(vid); imgtoblob(ls.slice(4)).then(blob => vid.src=URL.createObjectURL(blob))}
+if(ls.startsWith("?MV=")) {vid.loop=true;document.body.append(vid); imgtoblob(ls.slice(4)).then(blob => vid.src=blob)}
 
 /* following is optional */
 const inp=document.querySelector('input[type=file]');

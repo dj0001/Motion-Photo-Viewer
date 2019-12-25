@@ -2,7 +2,7 @@
 var vid=document.createElement("video"), i=0, a;
   vid.style = 'height:100vh; object-fit:scale-down; scroll-snap-align:start'
   vid.controls=true;
-  vid.onended= function(){i=(i+1)%a.length; vid.src=a[i]; vid.play()}
+  vid.onended= function(){i=(i+1)%a.length; vid.src=a[i]; vid.play(); vid.title=a[i]}
   if ('mediaSession' in navigator) navigator.mediaSession.setActionHandler('nexttrack', vid.onended);  //>5sec
 
 (document.querySelector('#files')||document.body).addEventListener('click', function(){
@@ -30,7 +30,7 @@ function buffertoblob(data) {
  var array=new Uint8Array(data), start
  for (var i = 0; i < array.length; i++) {if (array[i+4]==0x66 && array[i+5]==0x74 && array[i+6]==0x79 && array[i+7]==0x70) {start=i; break}}  //ftyp
  var blob=new Blob([array.subarray(start||0, array.length)], {type:"video/mp4"});
- if(start==undefined) return false;
+ if(start==undefined) {vid.poster=vid.src; return false}  //setTimeout(vid.onended,5000);
  return blob;
 }
 

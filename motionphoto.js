@@ -18,7 +18,7 @@ var vid=document.createElement("video"), i=0, a;
 })
 
 /* following is motion-photo-viewer; rename .jpg to .mp4.jpg */
-vid.onerror= function(e) {imgtoblob(vid.src).then(blob => {vid.src=blob;vid.play()})}
+window.addEventListener('error', (e) => {e=e.target; if(e.tagName=='VIDEO') {imgtoblob(e.src).then(blob => {e.src=blob;e.play()})} }, true)
 
 async function imgtoblob(img) 
 {

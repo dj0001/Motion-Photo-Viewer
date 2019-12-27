@@ -9,11 +9,11 @@ var vid=document.createElement("video"), i=0, b;
  if(!b.includes(event.target)) return
  event.preventDefault()
  if(!document.querySelector('video')) {
-  vid.onended= function(){i=(i+1)%b.length; vid.src=b[i].href; vid.play(); vid.title=b[i].href};
+  vid.onended= function(){i=(i+1)%b.length; vid.src=b[i].href||b[i].src||b[i]; vid.play(); vid.title=vid.src};
   (document.querySelector('ul')||document.body).append(vid)}
   //else {vid.loop=true; const copy=vid.cloneNode(); document.body.append(copy)}; vid.loop=true  //;copy.play()  //multiple
  document.querySelector('video').scrollIntoView()  //
- document.querySelector('video').src=event.target.href
+ document.querySelector('video').src=event.target.href||event.target.src
 })
 
 /* following is motion-photo-viewer; rename .jpg to .mp4.jpg */

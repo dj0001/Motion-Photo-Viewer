@@ -13,7 +13,6 @@ var vid=document.createElement("video"), i=0, b;
   (document.querySelector('ul')||document.body).append(vid)}
   //else {vid.loop=true; const copy=vid.cloneNode(); document.body.append(copy)}; vid.loop=true  //;copy.play()  //multiple
  document.querySelector('video').scrollIntoView()  //
- a=b.map(x => x.href)
  document.querySelector('video').src=event.target.href
 })
 

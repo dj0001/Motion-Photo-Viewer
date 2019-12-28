@@ -12,8 +12,8 @@ var vid=document.createElement("video"), i=0, b;
  if(img.src) {let v=document.createElement("video"); v.loop=v.muted=v.autoplay=v.playsinline=true; v.width=img.width;v.height=img.height; imgtoblob(img.src).then(blob => {v.src=blob;img.parentNode.insertBefore(v,img);img.parentNode.removeChild(img)}); return}  //
   vid.onended= function(){i=(i+1)%b.length; vid.src=b[i].href||b[i].src||b[i]; vid.play(); vid.title=vid.src};
   (document.querySelector('ul')||document.body).append(vid)
- document.querySelector('video').scrollIntoView()  //
- document.querySelector('video').src=img.href||img.src
+ vid.scrollIntoView()  //
+ vid.src=img.href||img.src
 })
 
 /* following is motion-photo-viewer; rename .jpg to .mp4.jpg */

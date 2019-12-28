@@ -5,15 +5,15 @@ var vid=document.createElement("video"), i=0, b;
   if ('mediaSession' in navigator) navigator.mediaSession.setActionHandler('nexttrack', vid.onended);  //>5sec
 
 (document.querySelector('#files')||document.body).addEventListener('click', function(){
- b=[...document.querySelectorAll('#files a')]  //'a[href*=".mp4"]'
+ b=[...document.querySelectorAll('#files img')]  //'a[href*=".mp4"]' '#files a'
  if(!b.includes(event.target)) return
  event.preventDefault()
- if(!document.querySelector('video')) {
+ let img=event.target
+ if(img.src) {let v=document.createElement("video"); v.loop=v.muted=v.autoplay=v.playsinline=true; v.width=img.width;v.height=img.height; imgtoblob(img.src).then(blob => {v.src=blob;img.parentNode.insertBefore(v,img);img.parentNode.removeChild(img)}); return}  //
   vid.onended= function(){i=(i+1)%b.length; vid.src=b[i].href||b[i].src||b[i]; vid.play(); vid.title=vid.src};
-  (document.querySelector('ul')||document.body).append(vid)}
-  //else {vid.loop=true; const copy=vid.cloneNode(); document.body.append(copy)}; vid.loop=true  //;copy.play()  //multiple
+  (document.querySelector('ul')||document.body).append(vid)
  document.querySelector('video').scrollIntoView()  //
- document.querySelector('video').src=event.target.href||event.target.src
+ document.querySelector('video').src=img.href||img.src
 })
 
 /* following is motion-photo-viewer; rename .jpg to .mp4.jpg */

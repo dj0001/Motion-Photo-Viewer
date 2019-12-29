@@ -9,7 +9,9 @@ var vid=document.createElement("video"), i=0, b;
  if(!b.includes(event.target)) return
  event.preventDefault()
  let img=event.target
- if(img.src) {let v=document.createElement("video"); v.loop=v.muted=v.autoplay=v.playsinline=true; v.width=img.width;v.height=img.height; v.poster=img.src;imgtoblob(img.src).then(blob => {v.src=blob;img.parentNode.insertBefore(v,img);img.parentNode.removeChild(img)}); return}  //
+ if(img.src) {let v=document.createElement("video"); v.loop=v.muted=v.autoplay=v.playsinline=true; v.width=img.width;v.height=img.height; v.poster=img.src;imgtoblob(img.src).then(blob => {v.src=blob;img.parentNode.insertBefore(v,img);img.parentNode.removeChild(img)});
+  v.currentTime=1; v.onclick= () => {if(!v.controls) {v.paused?v.play():v.pause()}}  //
+  return}  //
   vid.onended= function(){i=(i+1)%b.length; vid.src=b[i].href||b[i].src||b[i]; vid.play(); vid.title=vid.src};
   (document.querySelector('ul')||document.body).append(vid)
  vid.scrollIntoView()  //

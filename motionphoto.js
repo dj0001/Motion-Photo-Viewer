@@ -42,7 +42,7 @@ if(ls.startsWith("?MV=")) {vid.loop=true;document.body.append(vid); imgtoblob(ls
 /* following is optional */
 const inp=document.querySelector('input[type=file]');
 if(inp) {inp.onchange= function(){document.body.append(vid); vid.src=URL.createObjectURL(inp.files[0])}
- vid.onended= function(){i=(i+1)%inp.files.length; vid.src=URL.createObjectURL(inp.files[i]); vid.play(); vid.title=inp.files[i].name+'.mp4'};
+ vid.onended= function(){let r=1; i=(i+1)%(inp.files.length*r); if(!((i/r)%1)) {r=Math.floor(i/r);vid.src=URL.createObjectURL(inp.files[r]); vid.title=inp.files[r].name+'.mp4'}; vid.play()};  //r=3 repeats
  var d=document.createElement("a"); document.body.appendChild(d);
  vid.onclick= () => {if(!vid.controls) imgtoblob(URL.createObjectURL(inp.files[i]),1).then(blob => {d.download=inp.files[i].name; d.href=blob;d.click()})}  //pic 
 }

@@ -40,7 +40,7 @@ const ls=location.search;  //?MV=MV...jpg
 if(ls.startsWith("?MV=")) {vid.loop=true;document.body.append(vid); imgtoblob(ls.slice(4)).then(blob => vid.src=blob)}
 
 /* following is optional */
-const inp=document.querySelector('input[type=file]');
+const inp=document.querySelector('label>input[type=file]');
 if(inp) {inp.onchange= function(){document.body.append(vid); vid.src=URL.createObjectURL(inp.files[0])}
  vid.onended= function(){let r=1; i=(i+1)%(inp.files.length*r); if(!((i/r)%1)) {r=Math.floor(i/r);vid.src=URL.createObjectURL(inp.files[r]); vid.title=inp.files[r].name+'.mp4'}; vid.play()};  //r=3 repeats
  var d=document.createElement("a"); document.body.appendChild(d);

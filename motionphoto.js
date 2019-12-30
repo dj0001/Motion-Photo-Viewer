@@ -5,7 +5,7 @@ var vid=document.createElement("video"), i=0, b;
   if ('mediaSession' in navigator) navigator.mediaSession.setActionHandler('nexttrack', vid.onended);  //>5sec
 
 (document.querySelector('#files')||document.body).addEventListener('click', function(){
- b=[...document.querySelectorAll('#files img')]  //'a[href*=".mp4"]' '#files a'
+ b=[...document.querySelectorAll('#files img')]  //'a[href*=".mp4"]' '#files a' '.data-live-photo'  //edit here elements to use
  if(!b.includes(event.target)) return
  event.preventDefault()
  let img=event.target

@@ -2,6 +2,7 @@
 var vid=document.createElement("video"), i=0, b;
   vid.style = 'height:100vh; object-fit:scale-down; scroll-snap-align:start'
   vid.controls=true;
+  vid.autoplay=true;
   if ('mediaSession' in navigator) navigator.mediaSession.setActionHandler('nexttrack', vid.onended);  //>5sec
 
 (document.querySelector('#files')||document.body).addEventListener('click', function(){
@@ -19,7 +20,7 @@ var vid=document.createElement("video"), i=0, b;
 })
 
 /* following is motion-photo-viewer; rename .jpg to .mp4.jpg */
-window.addEventListener('error', (e) => {e=e.target; if(e.tagName=='VIDEO') {imgtoblob(e.src).then(blob => {e.src=blob;e.play()})} }, true)
+window.addEventListener('error', (e) => {e=e.target; if(e.tagName=='VIDEO') {imgtoblob(e.src).then(blob => {e.src=blob})} }, true)  //;e.play()
 
 async function imgtoblob(img,o) 
 {
